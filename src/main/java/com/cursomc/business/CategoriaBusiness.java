@@ -5,8 +5,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cursomc.business.exception.ObjectNotFoundException;
 import com.cursomc.domain.Categoria;
 import com.cursomc.repositories.CategoriaDao;
+
 
 @Service
 public class CategoriaBusiness {
@@ -16,7 +18,7 @@ public class CategoriaBusiness {
 	
 	public Categoria buscar(Integer id) {
 		 Optional<Categoria> obj = categoriaDao.findById(id);
-		 return obj.orElse(null);
+		 return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado id: " + id));
 	}
 
 }
