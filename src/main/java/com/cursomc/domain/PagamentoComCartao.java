@@ -1,13 +1,13 @@
 package com.cursomc.domain;
 
-import java.util.Date;
+import java.io.Serializable;
 
 import javax.persistence.Entity;
 
 import com.cursomc.domain.enums.EstadoPagamento;
 
 @Entity
-public class PagamentoComCartao extends Pagamento {
+public class PagamentoComCartao extends Pagamento implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer numeroDeParcelas;
