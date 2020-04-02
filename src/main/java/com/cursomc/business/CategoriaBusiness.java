@@ -16,13 +16,18 @@ public class CategoriaBusiness {
 	@Autowired
 	private CategoriaDao categoriaDao; 
 	
-	public Categoria buscar(Integer id) {
+	public Categoria find(Integer id) {
 		 Optional<Categoria> obj = categoriaDao.findById(id);
 		 return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado id: " + id));
 	}
 	
 	public Categoria insert(Categoria obj) {
 		obj.setId(null);
+		return categoriaDao.save(obj);
+	}
+	
+	public Categoria update(Categoria obj) {
+		find(obj.getId());
 		return categoriaDao.save(obj);
 	}
 
