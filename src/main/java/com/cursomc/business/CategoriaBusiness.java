@@ -20,5 +20,10 @@ public class CategoriaBusiness {
 		 Optional<Categoria> obj = categoriaDao.findById(id);
 		 return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado id: " + id));
 	}
+	
+	public Categoria insert(Categoria obj) {
+		obj.setId(null);
+		return categoriaDao.save(obj);
+	}
 
 }
