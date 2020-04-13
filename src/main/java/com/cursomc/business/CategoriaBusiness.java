@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.cursomc.business.exception.DataIntegrityException;
 import com.cursomc.business.exception.ObjectNotFoundException;
 import com.cursomc.domain.Categoria;
+import com.cursomc.dto.CategoriaDTO;
 import com.cursomc.repositories.CategoriaDao;
 
 
@@ -53,6 +54,10 @@ public class CategoriaBusiness {
 	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return categoriaDao.findAll(pageRequest);
+	}
+	
+	public Categoria fromDTO(CategoriaDTO objDTO) {
+		return new Categoria(objDTO.getId(), objDTO.getNome());
 	}
 
 }
