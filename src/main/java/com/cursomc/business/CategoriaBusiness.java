@@ -34,8 +34,9 @@ public class CategoriaBusiness {
 	}
 	
 	public Categoria update(Categoria obj) {
-		find(obj.getId());
-		return categoriaDao.save(obj);
+		Categoria categoria = find(obj.getId());
+		updateData(categoria, obj);
+		return categoriaDao.save(categoria);
 	}
 	
 	public void delete(Integer id) {
@@ -60,4 +61,7 @@ public class CategoriaBusiness {
 		return new Categoria(objDTO.getId(), objDTO.getNome());
 	}
 
+	private void updateData(Categoria newCategoria, Categoria categoria) {
+		newCategoria.setNome(categoria.getNome());
+	}
 }
