@@ -20,5 +20,4 @@ public class PedidoBusiness {
 		 Optional<Pedido> obj = pedidoDao.findById(id);
 		 return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado id: " + id));
 	}
-
 }
