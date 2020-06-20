@@ -38,6 +38,9 @@ public class PedidoBusiness {
 	@Autowired
 	private ClienteBusiness clienteBusiness;
 	
+	@Autowired
+	private EmailBusiness emailBusiness;
+	
 	public Pedido find(Integer id) {
 		 Optional<Pedido> obj = pedidoDao.findById(id);
 		 return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado id: " + id));
@@ -54,7 +57,7 @@ public class PedidoBusiness {
 			PagamentoComBoleto pagto = (PagamentoComBoleto) obj.getPagamento();
 			boletoBusiness.preencherPagamentoComBoleto(pagto, obj.getInstante());
 		}
-		pedidoDao.save(obj);
+		obj = pedidoDao.save(obj);
 		pagamentoDao.save(obj.getPagamento());
 		for (ItemPedido ip : obj.getItens()) {
 			ip.setDesconto(0.0);
@@ -63,7 +66,7 @@ public class PedidoBusiness {
 			ip.setPedido(obj);
 		}
 		itemPedidoDao.saveAll(obj.getItens());
-		System.out.println(obj);
+		emailBusiness.sendOrderConfirmationEmail(obj);
 		return obj;
 	}
 }
