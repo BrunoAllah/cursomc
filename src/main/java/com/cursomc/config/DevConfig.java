@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Profile;
 
 import com.cursomc.business.DatabaseBusiness;
 import com.cursomc.business.EmailBusiness;
-import com.cursomc.business.MockEmailBusiness;
+import com.cursomc.business.SmtpEmailBusiness;
 
 @Configuration
 @Profile("dev")
@@ -34,7 +34,7 @@ public class DevConfig {
 	
 	@Bean
 	public EmailBusiness emailBusiness() {
-		return new MockEmailBusiness();
+		return new SmtpEmailBusiness();
 	}
 
 }

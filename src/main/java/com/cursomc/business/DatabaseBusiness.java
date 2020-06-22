@@ -117,7 +117,7 @@ public class DatabaseBusiness {
 		estadoDao.saveAll(Arrays.asList(est1, est2));
 		cidadeDao.saveAll(Arrays.asList(c1, c2, c3));
 		
-		Cliente cli1 = new Cliente(null, "Maria", "maria@gmail.com", "00000000", TipoCliente.PESSOA_FISICA);
+		Cliente cli1 = new Cliente(null, "Maria", "teste@gmail.com", "00000000", TipoCliente.PESSOA_FISICA);
 		cli1.getTelefones().addAll(Arrays.asList("1100000000", "1111111111"));
 		
 		Endereco e1 = new Endereco(null, "Av. Paulista", "1500", "Apto 23", "Jardins", "00000-000", cli1, c1);
