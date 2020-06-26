@@ -129,7 +129,7 @@ public class Cliente implements Serializable{
 		return telefones;
 	}
 	
-	public Set<Perfil> getPerfil() {
+	public Set<Perfil> getPerfis() {
 		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
 	}
 	
