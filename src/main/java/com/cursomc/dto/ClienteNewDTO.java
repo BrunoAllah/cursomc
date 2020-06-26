@@ -27,6 +27,9 @@ public class ClienteNewDTO implements Serializable {
 	private Integer tipoCliente;
 	
 	@NotEmpty(message="Peenchimento obrigatório")
+	private String password;
+	
+	@NotEmpty(message="Peenchimento obrigatório")
 	private String logradouro;
 	
 	@NotEmpty(message="Peenchimento obrigatório")
@@ -152,6 +155,14 @@ public class ClienteNewDTO implements Serializable {
 
 	public void setCidadeId(Integer cidadeId) {
 		this.cidadeId = cidadeId;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 }
