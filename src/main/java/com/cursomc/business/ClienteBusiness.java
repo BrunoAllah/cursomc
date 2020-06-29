@@ -12,16 +12,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cursomc.business.exception.AuthorizationException;
 import com.cursomc.business.exception.DataIntegrityException;
 import com.cursomc.business.exception.ObjectNotFoundException;
 import com.cursomc.domain.Cidade;
 import com.cursomc.domain.Cliente;
 import com.cursomc.domain.Endereco;
+import com.cursomc.domain.enums.Perfil;
 import com.cursomc.domain.enums.TipoCliente;
 import com.cursomc.dto.ClienteDTO;
 import com.cursomc.dto.ClienteNewDTO;
 import com.cursomc.repositories.ClienteDao;
 import com.cursomc.repositories.EnderecoDao;
+import com.cursomc.security.UserSS;
 
 
 @Service
@@ -37,6 +40,9 @@ public class ClienteBusiness {
 	private EnderecoDao enderecoDao;
 	
 	public Cliente find(Integer id) {
+		UserSS user = UserBusiness.authenticated();
+		if (user == null || !user.hasHole(Perfil.ADMIN) && !id.equals(user.getId()))
+			throw new AuthorizationException("Acesso negado");
 		 Optional<Cliente> obj = clienteDao.findById(id);
 		 return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado id: " + id));
 	}
