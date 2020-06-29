@@ -9,6 +9,6 @@ import com.cursomc.domain.Cliente;
 @Repository
 public interface ClienteDao extends JpaRepository<Cliente, Integer>{
 
-	@Transactional
+	@Transactional(readOnly=true)
 	Cliente findByEmail(String email);
 }
