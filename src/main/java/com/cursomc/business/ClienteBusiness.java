@@ -1,5 +1,6 @@
 package com.cursomc.business;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cursomc.business.exception.AuthorizationException;
 import com.cursomc.business.exception.DataIntegrityException;
@@ -38,6 +40,9 @@ public class ClienteBusiness {
 	
 	@Autowired
 	private EnderecoDao enderecoDao;
+	
+	@Autowired
+	private S3Business s3Business;
 	
 	public Cliente find(Integer id) {
 		UserSS user = UserBusiness.authenticated();
@@ -102,5 +107,8 @@ public class ClienteBusiness {
 		newCliente.setEmail(cliente.getEmail());
 	}
 
+	public URI uploadProfilePicture(MultipartFile multipartFile) {
+		return s3Business.uploadFile(multipartFile);
+	}
 
 }
