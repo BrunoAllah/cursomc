@@ -1,10 +1,12 @@
 package com.cursomc.business;
 
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,6 +45,12 @@ public class ClienteBusiness {
 	
 	@Autowired
 	private S3Business s3Business;
+	
+	@Autowired
+	private ImageBusiness imageBusiness;
+	
+	@Value("${img.prefix.client.profile}")
+	private String prefix;
 	
 	public Cliente find(Integer id) {
 		UserSS user = UserBusiness.authenticated();
@@ -112,13 +120,19 @@ public class ClienteBusiness {
 		if (user == null)
 			throw new AuthorizationException("Acesso negado");
 		
-		URI uri = s3Business.uploadFile(multipartFile);
+		BufferedImage jpgImage = imageBusiness.getJpgImageFromFile(multipartFile);
+		String fileName = prefix + user.getId() + ".jpg";
 		
-		Cliente cli = find(user.getId());
-		cli.setImageURL(uri.toString());
-		clienteDao.save(cli);
+		return s3Business.uploadFile(imageBusiness.getInputStream(jpgImage, "jpg"), fileName, "image");
 		
-		return uri;
+		/*
+		 * URI uri = s3Business.uploadFile(multipartFile);
+		 * 
+		 * Cliente cli = find(user.getId()); cli.setImageURL(uri.toString());
+		 * clienteDao.save(cli);
+		 * 
+		 * return uri;
+		 */
 	}
 
 }
