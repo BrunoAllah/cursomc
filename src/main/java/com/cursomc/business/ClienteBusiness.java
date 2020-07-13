@@ -108,7 +108,17 @@ public class ClienteBusiness {
 	}
 
 	public URI uploadProfilePicture(MultipartFile multipartFile) {
-		return s3Business.uploadFile(multipartFile);
+		UserSS user = UserBusiness.authenticated();
+		if (user == null)
+			throw new AuthorizationException("Acesso negado");
+		
+		URI uri = s3Business.uploadFile(multipartFile);
+		
+		Cliente cli = find(user.getId());
+		cli.setImageURL(uri.toString());
+		clienteDao.save(cli);
+		
+		return uri;
 	}
 
 }
