@@ -52,6 +52,9 @@ public class ClienteBusiness {
 	@Value("${img.prefix.client.profile}")
 	private String prefix;
 	
+	@Value("${img.profile.size}")
+	private Integer imageSize;
+	
 	public Cliente find(Integer id) {
 		UserSS user = UserBusiness.authenticated();
 		if (user == null || !user.hasHole(Perfil.ADMIN) && !id.equals(user.getId()))
@@ -121,11 +124,13 @@ public class ClienteBusiness {
 			throw new AuthorizationException("Acesso negado");
 		
 		BufferedImage jpgImage = imageBusiness.getJpgImageFromFile(multipartFile);
+		jpgImage = imageBusiness.cropSquare(jpgImage);
+		jpgImage = imageBusiness.resize(jpgImage, imageSize);
 		String fileName = prefix + user.getId() + ".jpg";
 		
 		return s3Business.uploadFile(imageBusiness.getInputStream(jpgImage, "jpg"), fileName, "image");
 		
-		/*
+		/* Adicionar link da imagem no banco 
 		 * URI uri = s3Business.uploadFile(multipartFile);
 		 * 
 		 * Cliente cli = find(user.getId()); cli.setImageURL(uri.toString());
