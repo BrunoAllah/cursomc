@@ -95,6 +95,18 @@ public class ClienteBusiness {
 		return clienteDao.findAll(pageRequest);
 	}
 	
+	public Cliente findByEmail(String email) {
+		UserSS user = UserBusiness.authenticated();
+		if (user == null || !user.hasHole(Perfil.ADMIN) && !email.equals(user.getUsername()))
+			throw new AuthorizationException("Acesso negado!");
+		
+		Cliente cliente = clienteDao.findByEmail(email);
+		if (cliente == null) 
+			throw new ObjectNotFoundException("Usuário não encontrado! id: " + user.getId() + ", Tipo: " + Cliente.class.getName());
+		
+		return cliente;
+	}
+	
 	public Cliente fromDTO(ClienteDTO objDTO) {
 		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null, null);
 	}
